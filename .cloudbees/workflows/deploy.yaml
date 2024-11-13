@@ -14,6 +14,7 @@ jobs:
           echo "logging in..."
   
   deploy:
+    needs: [login]
     steps:
       - uses: docker://alpine:3.20
         run: |
