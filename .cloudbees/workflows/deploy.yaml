@@ -12,3 +12,6 @@ jobs:
       - uses: docker://alpine:3.20
         run: |
           echo "logging in..."
+  
+  verify:
+    uses: p-gombola/shared/.cloudbees/workflows/verify.yaml@main
