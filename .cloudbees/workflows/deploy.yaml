@@ -13,5 +13,12 @@ jobs:
         run: |
           echo "logging in..."
   
+  deploy:
+    steps:
+      - uses: docker://alpine:3.20
+        run: |
+          echo "deploying..."
+          
   verify:
+    needs: [deploy]
     uses: p-gombola/shared/.cloudbees/workflows/verify.yaml@main
