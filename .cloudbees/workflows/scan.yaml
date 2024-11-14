@@ -4,6 +4,7 @@ name: verify-deploy
 
 on:
   workflow_call: {}
+  workflow_dispatch: {}
 
 jobs:
   image:
