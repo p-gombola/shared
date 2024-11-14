@@ -7,19 +7,18 @@ on:
   workflow_call: {}
 
 jobs:
-  login:
+  authenticate:
     steps:
       - uses: docker://alpine:3.20
         run: |
-          echo "logging in..."
+          echo "authenticated."
   
+  scan:
+    uses: p-gombola/shared/.cloudbees/workflows/verify.yaml@main
+
   deploy:
-    needs: [login]
+    needs: [scan, authenticate]
     steps:
       - uses: docker://alpine:3.20
         run: |
           echo "deploying..."
-          
-  verify:
-    needs: [deploy]
-    uses: p-gombola/shared/.cloudbees/workflows/verify.yaml@main
