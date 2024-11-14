@@ -14,7 +14,7 @@ jobs:
           echo "authenticated."
   
   scan:
-    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@main
+    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
 
   deploy:
     needs: [scan, authenticate]
