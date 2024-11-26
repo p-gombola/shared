@@ -13,4 +13,5 @@ jobs:
         name: checkout
       - uses: docker://alpine:3.20
         run: |
-          ls .
+          echo `pwd`
+          echo `ls`
