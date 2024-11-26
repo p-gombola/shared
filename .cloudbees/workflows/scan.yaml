@@ -9,6 +9,8 @@ on:
 jobs:
   image:
     steps:
+      - uses: cloudbees-io/checkout@v1
+        name: checkout
       - uses: docker://alpine:3.20
         run: |
-          echo "image scanned..."
+          ls .
