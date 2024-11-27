@@ -42,6 +42,7 @@ jobs:
         run: |
           echo "auth token: ${{needs.prod-auth.outputs.token}}"
           echo "${{inputs.username}} is deploying to prod..."
+          echo "${{secrets.superSecretPassword}}"
   
   staging:
     needs: [scan]
