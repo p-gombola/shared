@@ -5,32 +5,40 @@ name: deploy
 on: 
   workflow_dispatch: {}
   workflow_call:
+    inputs:
+      username:
+        type: string
+        description: The username to use for deploying
+        required: false
+        default: system
     secrets:
       deploy_pwd:
         description: The password to use for deploying
         required: true
 
 jobs:
+  scan:
+    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
+
   prod-auth:
     steps:
       - uses: docker://alpine:3.20
         run: |
           if [ "${{secrets.deploy_pwd}}" != "" ]; then
             echo "authenticated!"
+            echo "deadbeef" > $CLOUDBEES_OUTPUTS/token
           else
-            echo "mising deploy_pwd"
+            echo "mising deploy_pwd secret"
             exit 1
           fi
-  
-  scan:
-    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
 
   prod:
     needs: [scan, prod-auth]
     steps:
       - uses: docker://alpine:3.20
         run: |
-          echo "deploying prod..."
+          echo "auth token: ${{needs.prod-auth.outputs.token}}"
+          echo "${{inputs.username}} is deploying to prod..."
   
   staging:
     needs: [scan]
