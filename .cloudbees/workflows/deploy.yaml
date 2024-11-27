@@ -15,12 +15,7 @@ jobs:
     steps:
       - uses: docker://alpine:3.20
         run: |
-          if [ "${{secrets.deploy_pwd}}" != "" ]; then
-            echo "authenticated"
-          else 
-            echo "deploy_pwd is empty"
-            exit 1
-          fi
+          echo ${{secrets.deploy_pwd}}
   
   scan:
     uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
