@@ -27,7 +27,7 @@ jobs:
         run: |
           if [ "${{secrets.deploy_pwd}}" != "" ]; then
             echo "authenticated!"
-            echo "deadbeef" > $CLOUDBEES_OUTPUTS/token
+            echo "ZGVhZGJlZWYK" > $CLOUDBEES_OUTPUTS/token
           else
             echo "mising deploy_pwd secret"
             exit 1
