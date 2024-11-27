@@ -23,6 +23,7 @@ jobs:
   prod-auth:
     steps:
       - uses: docker://alpine:3.20
+        id: get-token
         run: |
           if [ "${{secrets.deploy_pwd}}" != "" ]; then
             echo "authenticated!"
@@ -31,6 +32,8 @@ jobs:
             echo "mising deploy_pwd secret"
             exit 1
           fi
+    outputs:
+      token: ${{steps.get-token.outputs.token}}
 
   prod:
     needs: [scan, prod-auth]
