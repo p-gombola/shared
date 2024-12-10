@@ -3,12 +3,20 @@ kind: workflow
 name: verify-deploy
 
 on:
-  workflow_call: {}
+  workflow_call:
+    outputs:
+      result: 
+        description: Scan result
+        value: ${{jobs.image.outputs.result}}
   workflow_dispatch: {}
 
 jobs:
   image:
+    outputs:
+      result: ${{steps.scan-image.outputs.result}}
     steps:
-      - uses: docker://alpine:3.20
+      - id: scan-image
+        uses: docker://alpine:3.20
         run: |
+          echo -n "pass" > $CLOUDBEES_OUTPUTS/result
           echo "image scanned..."
