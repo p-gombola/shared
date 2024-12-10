@@ -17,8 +17,10 @@ on:
 jobs:
   scan:
     uses: p-gombola/shared/.cloudbees/workflows/scan.yaml
-  prod-auth:
-    needs: scan
+      
+  prod:
+    needs:
+      - scan
     if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
@@ -26,23 +28,14 @@ jobs:
         run: |
           if [ "${{secrets.deploy_pwd}}" != "" ]; then
             echo "authenticated!"
-            echo "ZGVhZGJlZWYK" > $CLOUDBEES_OUTPUTS/token
+            echo "ZGVhZGJlZWYK" > token
           else
             echo "mising deploy_pwd secret"
             exit 1
           fi
-    outputs:
-      token: ${{steps.get-token.outputs.token}}
-      
-  prod:
-    needs:
-      - prod-auth
-      - staging
-    if: ${{needs.scan.outputs.result == 'pass'}}
-    steps:
       - uses: docker://alpine:3.20
         run: |
-          echo "auth token: ${{needs.prod-auth.outputs.token}}"
+          echo "auth token: `cat token`"
           echo "${{inputs.username}} is deploying to prod..."
 
   staging:
