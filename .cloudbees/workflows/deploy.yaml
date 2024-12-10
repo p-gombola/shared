@@ -1,8 +1,7 @@
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
 name: deploy
-
-on: 
+on:
   workflow_dispatch: {}
   workflow_call:
     inputs:
@@ -15,9 +14,12 @@ on:
       deploy_pwd:
         description: The password to use for deploying
         required: true
-
 jobs:
+  scan:
+    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml
   prod-auth:
+    needs: scan
+    if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
         id: get-token
@@ -31,16 +33,21 @@ jobs:
           fi
     outputs:
       token: ${{steps.get-token.outputs.token}}
-
+      
   prod:
-    needs: [prod-auth]
+    needs:
+      - prod-auth
+      - staging
+    if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
         run: |
           echo "auth token: ${{needs.prod-auth.outputs.token}}"
           echo "${{inputs.username}} is deploying to prod..."
-  
+
   staging:
+    needs: scan
+    if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
         run: |
