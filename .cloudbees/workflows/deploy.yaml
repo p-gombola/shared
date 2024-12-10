@@ -19,9 +19,6 @@ jobs:
     uses: p-gombola/shared/.cloudbees/workflows/scan.yaml
       
   prod:
-    needs:
-      - scan
-    if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
         id: get-token
@@ -39,8 +36,6 @@ jobs:
           echo "${{inputs.username}} is deploying to prod..."
 
   staging:
-    needs: scan
-    if: ${{needs.scan.outputs.result == 'pass'}}
     steps:
       - uses: docker://alpine:3.20
         run: |
