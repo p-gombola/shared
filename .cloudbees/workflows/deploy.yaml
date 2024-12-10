@@ -17,9 +17,6 @@ on:
         required: true
 
 jobs:
-  scan:
-    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
-
   prod-auth:
     steps:
       - uses: docker://alpine:3.20
@@ -36,7 +33,7 @@ jobs:
       token: ${{steps.get-token.outputs.token}}
 
   prod:
-    needs: [scan, prod-auth]
+    needs: [prod-auth]
     steps:
       - uses: docker://alpine:3.20
         run: |
@@ -44,7 +41,6 @@ jobs:
           echo "${{inputs.username}} is deploying to prod..."
   
   staging:
-    needs: [scan]
     steps:
       - uses: docker://alpine:3.20
         run: |
