@@ -25,6 +25,7 @@ jobs:
       result: ${{ steps.deploy-app.outputs.result }}
     steps:
       - id: deploy-app
+        uses: docker://alpine:3.21
         run: echo "pass" >> $CLOUDBEES_OUTPUTS/result
 
 
