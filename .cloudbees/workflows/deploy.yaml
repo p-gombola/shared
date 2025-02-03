@@ -17,7 +17,7 @@ on:
     outputs:
       deploy-result:
         value: ${{ jobs.deploy.outputs.result }}
-        description: 'pass' or 'fail'
+        description: pass or fail
 
 jobs:
   deploy:
@@ -25,7 +25,6 @@ jobs:
       result: ${{ steps.deploy-app.outputs.result }}
     steps:
       - id: deploy-app
-        uses: alpine:3.21
         run: echo "pass" >> $CLOUDBEES_OUTPUTS/result
 
 
