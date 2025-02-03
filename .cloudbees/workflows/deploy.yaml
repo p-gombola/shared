@@ -3,21 +3,7 @@ kind: workflow
 name: deploy
 
 on: 
-  workflow_call: 
-    inputs:
-      config-path:
-        required: true
-        type: string
-        default: ./config
-        description: Path to config files for app
-    secrets:
-      access-token:
-        required: true
-        description: The token to use for deploying
-    outputs:
-      deploy-result:
-        value: ${{ jobs.deploy.outputs.result }}
-        description: pass or fail
+  workflow_call: {}
 
 jobs:
   deploy:
