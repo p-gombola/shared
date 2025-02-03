@@ -3,29 +3,30 @@ kind: workflow
 name: deploy
 
 on: 
-  workflow_dispatch: {}
-  workflow_call: {}
+  workflow_call: 
+    inputs:
+      config-path:
+        required: true
+        type: string
+        default: ./config
+        description: Path to config files for app
+    secrets:
+      access-token:
+        required: true
+        description: The token to use for deploying
+    outputs:
+      deploy-result:
+        value: ${{ jobs.deploy.outputs.result }}
+        description: 'pass' or 'fail'
 
 jobs:
-  prod-auth:
+  deploy:
+    outputs:
+      result: ${{ steps.deploy-app.outputs.result }}
     steps:
-      - uses: docker://alpine:3.20
-        run: |
-          echo "authenticated."
-  
-  scan:
-    uses: p-gombola/shared/.cloudbees/workflows/scan.yaml@v1
+      - id: deploy-app
+        uses: alpine:3.21
+        run: echo "pass" >> $CLOUDBEES_OUTPUTS/result
 
-  prod:
-    needs: [scan, prod-auth]
-    steps:
-      - uses: docker://alpine:3.20
-        run: |
-          echo "deploying prod..."
-  
-  staging:
-    needs: [scan]
-    steps:
-      - uses: docker://alpine:3.20
-        run: |
-          echo "deploying staging..."
+
+
