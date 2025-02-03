@@ -3,7 +3,13 @@ kind: workflow
 name: deploy
 
 on: 
-  workflow_call: {}
+  workflow_call: 
+    inputs:
+      config-path:
+        required: true
+        type: string
+        default: ./config
+        description: Path to config files for app
 
 jobs:
   deploy:
