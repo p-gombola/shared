@@ -10,6 +10,10 @@ on:
         type: string
         default: ./config
         description: Path to config files for app
+    secrets:
+      access-token:
+        required: true
+        description: The token to use for deploying
 
 jobs:
   deploy:
