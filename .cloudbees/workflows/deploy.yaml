@@ -5,21 +5,7 @@ name: deploy
 on: 
   workflow_dispatch: {}
   
-  workflow_call: 
-    inputs:
-      config-path:
-        required: true
-        type: string
-        default: ./config
-        description: Path to config files for app
-    secrets:
-      access-token:
-        required: true
-        description: The token to use for deployingd
-    outputs:
-      deploy-result:
-        value: ${{ jobs.deploy-shared.outputs.result }}
-        description: simple value output
+  workflow_call: {}
 
 jobs:
   deploy-shared:
@@ -27,8 +13,6 @@ jobs:
       - id: deploy-app
         uses: docker://alpine:3.21
         run: |
-          echo -n "pass" > $CLOUDBEES_OUTPUTS/result
-    outputs:
-      result: ${{ steps.deploy-app.outputs.result }}
+          echo ${{ secrets.env-secret }}
 
 
