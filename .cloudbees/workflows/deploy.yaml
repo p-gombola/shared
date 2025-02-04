@@ -29,7 +29,8 @@ jobs:
     steps:
       - id: deploy-app
         uses: docker://alpine:3.21
-        run: echo "pass" >> $CLOUDBEES_OUTPUTS/result
+        run: |
+          echo -n "pass" > $CLOUDBEES_OUTPUTS/result
 
 
 
