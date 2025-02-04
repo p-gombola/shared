@@ -20,9 +20,6 @@ on:
       deploy-result:
         value: simple
         description: simple value output
-      out1:
-        value: ${{ jobs.deploy.outputs.result }}
-        description: This is output 1
 
 jobs:
   deploy:
