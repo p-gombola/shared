@@ -13,6 +13,6 @@ jobs:
       - id: deploy-app
         uses: docker://alpine:3.21
         run: |
-          echo ${{ secrets.env-secret }}
+          echo "Hello, world"
 
 
