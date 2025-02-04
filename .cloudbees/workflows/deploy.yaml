@@ -13,7 +13,11 @@ on:
     secrets:
       access-token:
         required: true
-        description: The token to use for deploying
+        description: The token to use for deployingd
+    outputs:
+      deploy-result:
+        value: simple
+        description: simple value output
 
 jobs:
   deploy:
