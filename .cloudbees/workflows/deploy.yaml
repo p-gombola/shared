@@ -3,6 +3,8 @@ kind: workflow
 name: deploy
 
 on: 
+  workflow_dispatch: {}
+  
   workflow_call: 
     inputs:
       config-path:
