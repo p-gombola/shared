@@ -18,18 +18,17 @@ on:
         description: The token to use for deployingd
     outputs:
       deploy-result:
-        value: simple
+        value: ${{ jobs.deploy.outputs.result }}
         description: simple value output
 
 jobs:
   deploy:
-    outputs:
-      result: 'pass'
     steps:
       - id: deploy-app
         uses: docker://alpine:3.21
         run: |
           echo -n "pass" > $CLOUDBEES_OUTPUTS/result
-
+    outputs:
+      result: ${{ steps.deploy-app.outputs.result }}
 
 
