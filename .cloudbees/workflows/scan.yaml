@@ -4,19 +4,14 @@ name: verify-deploy
 
 on:
   workflow_call:
-    outputs:
-      result: 
-        description: Scan result
-        value: ${{jobs.image.outputs.result}}
-  workflow_dispatch: {}
+    secrets:
+      top_secret_2:
+        required: true
 
 jobs:
-  image:
-    outputs:
-      result: ${{steps.scan-image.outputs.result}}
+  inner-2:
     steps:
-      - id: scan-image
-        uses: docker://alpine:3.20
+      - name: test secret value
+        uses: docker://alpine:3.21
         run: |
-          echo -n "pass" > $CLOUDBEES_OUTPUTS/result
-          echo "image scanned..."
+          [ "${{ secrets.top_secret_2 }}" = "secretFromEnv" ]
